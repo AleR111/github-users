@@ -1,13 +1,7 @@
 import {FC, useEffect} from 'react';
 
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import {useAppActions} from '../../hooks';
+import {useAppActions, useAppSelector} from '../../hooks';
+import {Table} from '../ui-component';
 
 function createData(
     name: string,
@@ -27,50 +21,35 @@ const rows = [
     createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
+const columns = [
+    {id: 'id', label: 'Идентификатор'},
+    {id: 'name', label: 'Имя'},
+    {id: 'login', label: 'Логин'},
+    {id: 'created_at', label: 'Дата создания'},
+    {id: 'html_url', label: 'Профиль'},
+];
+
 export const UsersList: FC = () => {
     const {fetchUsers} = useAppActions();
+    const {users, isLoading, error} = useAppSelector((store) => store.users);
 
     useEffect(() => {
         fetchUsers();
     }, []);
 
+    if (isLoading) return <div>loading</div>;
+    if (error) return <div>{error}</div>;
+
+    const isUsersData = !!users.length;
+
     return (
-        <TableContainer component={Paper}>
-            <Table
-                sx={{minWidth: 650}}
-                aria-label="simple table"
-            >
-                <TableHead>
-                    <TableRow>
-                        <TableCell>идентификатор</TableCell>
-                        <TableCell align="right">имя</TableCell>
-                        <TableCell align="right">логин</TableCell>
-                        <TableCell align="right">Дата создания</TableCell>
-                        <TableCell align="right">профиль</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map((row) => (
-                        <TableRow
-                            key={row.name}
-                            sx={{
-                                '&:last-child td, &:last-child th': {border: 0},
-                            }}
-                        >
-                            <TableCell
-                                component="th"
-                                scope="row"
-                            >
-                                {row.name}
-                            </TableCell>
-                            <TableCell align="right">{row.calories}</TableCell>
-                            <TableCell align="right">{row.fat}</TableCell>
-                            <TableCell align="right">{row.carbs}</TableCell>
-                            <TableCell align="right">{row.protein}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <div>
+            {isUsersData && (
+                <Table
+                    columns={columns}
+                    data={users}
+                />
+            )}
+        </div>
     );
 };

@@ -4,7 +4,7 @@ import {fetchUsers} from '../actionCreators/usersActions';
 interface User {}
 
 interface InitialState {
-    users: User[];
+    users: any[];
     isLoading: boolean;
     error: string;
 }
