@@ -1,3 +1,7 @@
-export const reducers = {};
+import {usersSlice} from './usersReducer';
 
-export const actions = {};
+export const reducers = {
+    users: usersSlice.reducer,
+};
+
+export const actions = {...usersSlice.actions};

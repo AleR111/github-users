@@ -7,7 +7,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { useAppActions } from '../../hooks';
+import {useAppActions} from '../../hooks';
 
 function createData(
     name: string,
@@ -28,11 +28,11 @@ const rows = [
 ];
 
 export const UsersList: FC = () => {
-  const {} = useAppActions()
+    const {fetchUsers} = useAppActions();
 
-  useEffect(() => {
-    
-  })
+    useEffect(() => {
+        fetchUsers();
+    }, []);
 
     return (
         <TableContainer component={Paper}>
