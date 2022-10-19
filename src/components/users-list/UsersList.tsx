@@ -1,25 +1,9 @@
-import {FC, useEffect} from 'react';
+import {FC, useEffect, useState} from 'react';
 
 import {useAppActions, useAppSelector} from '../../hooks';
-import {Table} from '../ui-component';
-
-function createData(
-    name: string,
-    calories: number,
-    fat: number,
-    carbs: number,
-    protein: number
-) {
-    return {name, calories, fat, carbs, protein};
-}
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+import {Search, Table} from '../ui-component';
+import {Pagination} from '../ui-component/pagination';
+import classes from './usersList.module.scss';
 
 const columns = [
     {id: 'id', label: 'Идентификатор'},
@@ -33,6 +17,14 @@ export const UsersList: FC = () => {
     const {fetchUsers} = useAppActions();
     const {users, isLoading, error} = useAppSelector((store) => store.users);
 
+    const [search, setSearch] = useState('');
+    const [page, setPage] = useState(1);
+
+    const newPage = (page: number) => {
+        setPage(page);
+        // dispatch(getPublicGists(page))
+    };
+
     useEffect(() => {
         fetchUsers();
     }, []);
@@ -44,12 +36,30 @@ export const UsersList: FC = () => {
 
     return (
         <div>
+            <div className={classes.searchBlock}>
+                <Search
+                    value={search}
+                    setValue={setSearch}
+                    placeholder="Filter by name"
+                />
+            </div>
+
             {isUsersData && (
                 <Table
                     columns={columns}
                     data={users}
                 />
             )}
+
+            {/* {data.length && ( */}
+            <div className={classes.paginationBox}>
+                <Pagination
+                    count={25}
+                    page={page}
+                    onChange={newPage}
+                />
+            </div>
+            {/* )} */}
         </div>
     );
 };
