@@ -10,7 +10,7 @@ const columns = [
     {id: 'id', label: 'Идентификатор'},
     {id: 'name', label: 'Имя'},
     {id: 'login', label: 'Логин'},
-    {id: 'created_at', label: 'Дата создания'},
+    {id: 'created_at', label: 'Дата создания', isSort: true},
     {id: 'html_url', label: 'Профиль'},
 ];
 
@@ -19,23 +19,30 @@ export const UsersList: FC = () => {
     const {users, isLoading, error} = useAppSelector((store) => store.users);
 
     const [search, setSearch] = useState('');
+    console.log('🚀 ~ file: UsersList.tsx ~ line 22 ~ search', search);
     const [page, setPage] = useState(1);
     const [openModal, setOpenModal] = useState(false);
     const [userData, setUserData] = useState<User | null>(null);
 
     const newPage = (page: number) => {
         setPage(page);
-        // dispatch(getPublicGists(page))
     };
 
     const selectRow = (rowData: any) => {
         setOpenModal(true);
         setUserData(rowData);
     };
+    const initOrderBy = {
+        id: '',
+        order: '',
+    };
+
+    const [orderBy, setOrderBy] = useState(initOrderBy);
 
     useEffect(() => {
         fetchUsers();
-    }, []);
+        console.log(search, page);
+    }, [page]);
 
     if (isLoading) return <div>loading</div>;
     if (error) return <div>{error}</div>;
@@ -46,7 +53,7 @@ export const UsersList: FC = () => {
         <div>
             <div className={classes.searchBlock}>
                 <Search
-                    value={search}
+                    // value={search}
                     setValue={setSearch}
                     placeholder="Filter by name"
                 />
@@ -57,6 +64,13 @@ export const UsersList: FC = () => {
                     columns={columns}
                     data={users}
                     onClick={selectRow}
+                    orderBy={orderBy}
+                    changeSort={(order) => {
+                        setOrderBy({
+                            ...order,
+                            order: order.order === 'asc' ? 'desc' : 'asc',
+                        });
+                    }}
                 />
             )}
 

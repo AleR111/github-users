@@ -1,25 +1,39 @@
 import {Input} from '@mui/material';
 
-import {FC, SetStateAction, useCallback} from 'react';
+import {
+    FC,
+    memo,
+    SetStateAction,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react';
 import {debounce} from 'lodash';
 
 import classes from './search.module.scss';
 
 interface SearchProps {
-    value: string;
+    // value: string;
     setValue: (value: SetStateAction<string>) => void;
     placeholder?: string;
 }
 
-export const Search: FC<SearchProps> = ({value, setValue, placeholder}) => {
+export const Search: FC<SearchProps> = ({setValue, placeholder}) => {
+    const [value1, setValue1] = useState('');
     const changeHandler = (event: any) => {
         setValue(event.target.value);
     };
 
-    const debouncedChangeHandler = useCallback(
-        debounce(changeHandler, 1500),
-        []
-    );
+    const debouncedChangeHandler = useMemo(() => {
+        return debounce(changeHandler, 1500);
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            debouncedChangeHandler.cancel();
+        };
+    });
 
     return (
         <Input

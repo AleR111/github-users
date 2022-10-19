@@ -7,11 +7,13 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    TableSortLabel,
 } from '@mui/material';
 
 interface Columns {
     id: string;
     label: string;
+    isSort?: boolean;
 }
 
 type TableDate = Record<string, string>;
@@ -20,9 +22,17 @@ interface TableProps {
     columns: Columns[];
     data: TableDate[];
     onClick?: (row: TableDate) => void;
+    changeSort?: (order: any) => void;
+    orderBy?: any;
 }
 
-export const Table: FC<TableProps> = ({columns, data, onClick}) => {
+export const Table: FC<TableProps> = ({
+    columns,
+    data,
+    onClick,
+    changeSort,
+    orderBy,
+}) => {
     return (
         <TableContainer component={Paper}>
             <TableUI
@@ -33,7 +43,31 @@ export const Table: FC<TableProps> = ({columns, data, onClick}) => {
                     <TableRow>
                         {columns.map((col) => {
                             return (
-                                <TableCell key={col.id}>{col.label}</TableCell>
+                                <TableCell key={col.id}>
+                                    {col.isSort ? (
+                                        <TableSortLabel
+                                            active={orderBy.id === col.id}
+                                            direction={
+                                                orderBy.id === col.id
+                                                    ? orderBy.order
+                                                    : 'asc'
+                                            }
+                                            onClick={() =>
+                                                changeSort({
+                                                    id: col.id,
+                                                    order:
+                                                        orderBy.id === col.id
+                                                            ? orderBy.order
+                                                            : 'desc',
+                                                })
+                                            }
+                                        >
+                                            {col.label}
+                                        </TableSortLabel>
+                                    ) : (
+                                        col.label
+                                    )}
+                                </TableCell>
                             );
                         })}
                     </TableRow>
