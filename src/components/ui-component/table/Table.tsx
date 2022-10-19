@@ -9,6 +9,7 @@ import {
     TableRow,
     TableSortLabel,
 } from '@mui/material';
+import {Sorting} from '../../../types';
 
 interface Columns {
     id: string;
@@ -23,7 +24,7 @@ interface TableProps {
     data: TableDate[];
     onClick?: (row: TableDate) => void;
     changeSort?: (order: any) => void;
-    orderBy?: any;
+    sorting: Sorting | null;
 }
 
 export const Table: FC<TableProps> = ({
@@ -31,7 +32,7 @@ export const Table: FC<TableProps> = ({
     data,
     onClick,
     changeSort,
-    orderBy,
+    sorting,
 }) => {
     return (
         <TableContainer component={Paper}>
@@ -46,18 +47,18 @@ export const Table: FC<TableProps> = ({
                                 <TableCell key={col.id}>
                                     {col.isSort ? (
                                         <TableSortLabel
-                                            active={orderBy.id === col.id}
+                                            active={sorting?.id === col.id}
                                             direction={
-                                                orderBy.id === col.id
-                                                    ? orderBy.order
+                                                sorting?.id === col.id
+                                                    ? sorting?.order
                                                     : 'asc'
                                             }
                                             onClick={() =>
                                                 changeSort({
                                                     id: col.id,
                                                     order:
-                                                        orderBy.id === col.id
-                                                            ? orderBy.order
+                                                        sorting?.id === col.id
+                                                            ? sorting?.order
                                                             : 'desc',
                                                 })
                                             }
