@@ -1,8 +1,9 @@
 import {FC, useEffect, useState} from 'react';
 
 import {useAppActions, useAppSelector} from '../../hooks';
-import {Search, Table} from '../ui-component';
-import {Pagination} from '../ui-component/pagination';
+import {User} from '../../types';
+import {Modal, Pagination, Search, Table} from '../ui-component';
+import {UserCard} from './user-card';
 import classes from './usersList.module.scss';
 
 const columns = [
@@ -19,10 +20,17 @@ export const UsersList: FC = () => {
 
     const [search, setSearch] = useState('');
     const [page, setPage] = useState(1);
+    const [openModal, setOpenModal] = useState(false);
+    const [userData, setUserData] = useState<User | null>(null);
 
     const newPage = (page: number) => {
         setPage(page);
         // dispatch(getPublicGists(page))
+    };
+
+    const selectRow = (rowData: any) => {
+        setOpenModal(true);
+        setUserData(rowData);
     };
 
     useEffect(() => {
@@ -48,6 +56,7 @@ export const UsersList: FC = () => {
                 <Table
                     columns={columns}
                     data={users}
+                    onClick={selectRow}
                 />
             )}
 
@@ -59,6 +68,12 @@ export const UsersList: FC = () => {
                     onChange={newPage}
                 />
             </div>
+            <Modal
+                openModal={openModal}
+                setOpenModal={setOpenModal}
+            >
+                <UserCard userData={userData} />
+            </Modal>
             {/* )} */}
         </div>
     );

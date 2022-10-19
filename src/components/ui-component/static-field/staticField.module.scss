@@ -1,0 +1,16 @@
+.field {
+    display: flex;
+    justify-content: space-between;
+    font-family: Consolas, 'Times New Roman', serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    margin: 8px 0;
+
+    & :first-of-type {
+        color: #a3a3a3;
+    }
+    & :last-of-type {
+        color: #333333;
+    }
+}

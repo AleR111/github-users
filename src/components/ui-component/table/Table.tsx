@@ -19,9 +19,10 @@ type TableDate = Record<string, string>;
 interface TableProps {
     columns: Columns[];
     data: TableDate[];
+    onClick?: (row: TableDate) => void;
 }
 
-export const Table: FC<TableProps> = ({columns, data}) => {
+export const Table: FC<TableProps> = ({columns, data, onClick}) => {
     return (
         <TableContainer component={Paper}>
             <TableUI
@@ -40,13 +41,14 @@ export const Table: FC<TableProps> = ({columns, data}) => {
                 <TableBody>
                     {data.map((row) => (
                         <TableRow
+                            hover
                             key={row.id}
                             sx={{
                                 '&:last-child td, &:last-child th': {
                                     border: 0,
                                 },
                             }}
-                            onClick={() => console.log(row)}
+                            onClick={() => onClick(row)}
                         >
                             {columns.map((col) => {
                                 return (
