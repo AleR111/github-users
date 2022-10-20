@@ -9,6 +9,7 @@ import {
     TableRow,
     TableSortLabel,
 } from '@mui/material';
+import {format} from 'date-fns';
 
 import {Columns, FieldType, Sorting, TableDate} from '../../../types';
 import {Link} from '../Link';
@@ -41,7 +42,7 @@ export const Table: FC<TableProps> = ({
                         {columns.map((col) => {
                             return (
                                 <TableCell key={col.id}>
-                                    {col.type === FieldType.SORTING ? (
+                                    {col.isSort ? (
                                         <TableSortLabel
                                             active={sorting?.id === col.id}
                                             direction={
@@ -87,8 +88,13 @@ export const Table: FC<TableProps> = ({
                                                 href={row[col.id]}
                                                 label={row[col.id]}
                                             />
+                                        ) : col.type === FieldType.DATE ? (
+                                            format(
+                                                new Date(row[col.id] as string),
+                                                'dd-MM-yyyy'
+                                            )
                                         ) : (
-                                            row[col.id]
+                                            row[col.id] || '-'
                                         )}
                                     </TableCell>
                                 );

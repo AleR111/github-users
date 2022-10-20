@@ -1,15 +1,20 @@
 import {FC, memo, useEffect, useState} from 'react';
 import {useAppActions, useAppSelector} from '../../../hooks';
-import {FieldType, Sorting, User} from '../../../types';
+import {Columns, FieldType, Sorting, User} from '../../../types';
 import {Error, Modal, Table} from '../../ui-component';
 import {UserCard} from '../user-card';
 import {UsersSkeleton} from './users-skeleton';
 
-const columns = [
+const columns: Columns[] = [
     {id: 'id', label: 'Идентификатор'},
     {id: 'name', label: 'Имя'},
     {id: 'login', label: 'Логин'},
-    {id: 'created_at', label: 'Дата создания', type: FieldType.SORTING},
+    {
+        id: 'created_at',
+        label: 'Дата создания',
+        type: FieldType.DATE,
+        isSort: true,
+    },
     {id: 'html_url', label: 'Профиль', type: FieldType.LINK},
 ];
 
@@ -42,6 +47,10 @@ export const UsersTable: FC<UsersTableProps> = memo(({search, page}) => {
     useEffect(() => {
         fetchUsers({page, search, sorting});
     }, [page, search, sorting]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    });
 
     if (isLoading) return <UsersSkeleton />;
     if (error) return <Error value={error} />;

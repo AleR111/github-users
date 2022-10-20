@@ -9,8 +9,10 @@
 
     & :first-of-type {
         color: #a3a3a3;
+        margin-right: 16px;
     }
     & :last-of-type {
         color: #333333;
+        text-align: end;
     }
 }
