@@ -1,11 +1,11 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 
-class Request {
+class Requests {
     private request: AxiosInstance;
 
-    constructor() {
+    constructor(baseURL: string) {
         this.request = axios.create({
-            baseURL: 'https://api.github.com',
+            baseURL,
         });
     }
 
@@ -22,4 +22,4 @@ class Request {
     }
 }
 
-export const request = new Request();
+export const githubRequests = new Requests('https://api.github.com');

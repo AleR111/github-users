@@ -1,16 +1,17 @@
+import {per_page} from '../settings';
 import {Sorting} from '../types';
-import {request} from './request';
+import {githubRequests} from './request';
 
 const USERS_URL = '/users';
 
-export const searchUsers = <T>(
+export const getUsers = <T>(
     search: string,
     page: number,
     sorting: Sorting | null
 ) => {
     const sortingPoint = sorting ? `&sort=joined&order=${sorting.order}` : '';
-    const resultUrl = `search${USERS_URL}?per_page=5&q=${search||'"'}&page=${page}${sortingPoint}`;
+    const resultUrl = `search${USERS_URL}?per_page=${per_page}&q=${search||'""'}&page=${page}${sortingPoint}`;
 
-    return request.get<T>(resultUrl);
+    return githubRequests.get<T>(resultUrl);
 };
-export const getUser = (login: string) => request.get(`${USERS_URL}/${login}`);
+export const getUserData = <T>(login: string) => githubRequests.get<T>(`${USERS_URL}/${login}`);

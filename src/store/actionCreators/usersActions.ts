@@ -1,4 +1,4 @@
-import {getUser, searchUsers} from '../../api';
+import {getUserData, getUsers} from '../../api';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {sliceName} from '../reducers/usersReducer';
 import {Sorting} from '../../types';
@@ -12,24 +12,26 @@ interface Params {
 export const fetchUsers = createAsyncThunk(
     `${sliceName}/fetchUsers`,
     async (params: Params = {}, {rejectWithValue}) => {
-        console.log('🚀 ~ file: usersActions.ts ~ line 8 ~ params', params);
+        const {page, search, sorting} = params;
         try {
-            const response = await searchUsers<any>(
-                params.search,
-                params.page,
-                params.sorting
-            );
+            const response = await getUsers<any>(search, page, sorting);
 
-            const array = response.data.items as any[];
-            const users = array.map(async (el) => {
-                return await getUser(el.login);
+            const usersLogins = response.data.items as any[];
+            const usersPromises = usersLogins.map(async (user) => {
+                return await getUserData(user.login);
             });
 
-            const results = await Promise.all(users ?? []);
+            const users = await Promise.all(usersPromises);
+            const userData = users.map((el) => el.data);
 
-            return results.map((el) => el.data);
+            const data = {
+                users: userData,
+                total_count: response.data.total_count,
+            };
+
+            return data;
         } catch (e) {
-            return rejectWithValue(e.message);
+            return rejectWithValue(e.response.data.message);
         }
     }
 );

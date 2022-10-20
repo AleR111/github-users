@@ -14,13 +14,11 @@ import {debounce} from 'lodash';
 import classes from './search.module.scss';
 
 interface SearchProps {
-    // value: string;
     setValue: (value: SetStateAction<string>) => void;
     placeholder?: string;
 }
 
 export const Search: FC<SearchProps> = ({setValue, placeholder}) => {
-    const [value1, setValue1] = useState('');
     const changeHandler = (event: any) => {
         setValue(event.target.value);
     };

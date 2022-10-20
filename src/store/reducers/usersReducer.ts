@@ -1,16 +1,15 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {UserListData} from '../../types';
 import {fetchUsers} from '../actionCreators/usersActions';
 
-interface User {}
-
 interface InitialState {
-    users: any[];
+    data: UserListData | null;
     isLoading: boolean;
     error: string;
 }
 
 const initialState: InitialState = {
-    users: [],
+    data: null,
     isLoading: null,
     error: '',
 };
@@ -22,10 +21,13 @@ export const usersSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: {
-        [fetchUsers.fulfilled.type]: (state, action: PayloadAction<User[]>) => {
+        [fetchUsers.fulfilled.type]: (
+            state,
+            action: PayloadAction<UserListData>
+        ) => {
             state.isLoading = false;
             state.error = '';
-            state.users = action.payload;
+            state.data = action.payload;
         },
         [fetchUsers.pending.type]: (state) => {
             state.isLoading = true;

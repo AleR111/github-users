@@ -34,3 +34,8 @@
 // }
 
 export type User = Record<string, string | number | boolean>;
+
+export interface UserListData {
+    users: User[];
+    total_count: number;
+}

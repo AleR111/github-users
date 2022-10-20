@@ -9,21 +9,15 @@ import {
     TableRow,
     TableSortLabel,
 } from '@mui/material';
-import {Sorting} from '../../../types';
 
-interface Columns {
-    id: string;
-    label: string;
-    isSort?: boolean;
-}
-
-type TableDate = Record<string, string>;
+import {Columns, FieldType, Sorting, TableDate} from '../../../types';
+import {Link} from '../Link';
 
 interface TableProps {
     columns: Columns[];
     data: TableDate[];
     onClick?: (row: TableDate) => void;
-    changeSort?: (order: any) => void;
+    changeSort?: (sorting: Sorting) => void;
     sorting: Sorting | null;
 }
 
@@ -34,18 +28,20 @@ export const Table: FC<TableProps> = ({
     changeSort,
     sorting,
 }) => {
+    const changeSortHandler = (col: Columns) =>
+        changeSort({
+            id: col.id,
+            order: sorting?.id === col.id ? sorting?.order : 'desc',
+        });
     return (
         <TableContainer component={Paper}>
-            <TableUI
-                sx={{minWidth: 650}}
-                aria-label="simple table"
-            >
+            <TableUI sx={{minWidth: 650}}>
                 <TableHead>
                     <TableRow>
                         {columns.map((col) => {
                             return (
                                 <TableCell key={col.id}>
-                                    {col.isSort ? (
+                                    {col.type === FieldType.SORTING ? (
                                         <TableSortLabel
                                             active={sorting?.id === col.id}
                                             direction={
@@ -54,13 +50,7 @@ export const Table: FC<TableProps> = ({
                                                     : 'asc'
                                             }
                                             onClick={() =>
-                                                changeSort({
-                                                    id: col.id,
-                                                    order:
-                                                        sorting?.id === col.id
-                                                            ? sorting?.order
-                                                            : 'desc',
-                                                })
+                                                changeSortHandler(col)
                                             }
                                         >
                                             {col.label}
@@ -92,7 +82,14 @@ export const Table: FC<TableProps> = ({
                                         component="th"
                                         scope="row"
                                     >
-                                        {row[col.id]}
+                                        {col.type === FieldType.LINK ? (
+                                            <Link
+                                                href={row[col.id]}
+                                                label={row[col.id]}
+                                            />
+                                        ) : (
+                                            row[col.id]
+                                        )}
                                     </TableCell>
                                 );
                             })}

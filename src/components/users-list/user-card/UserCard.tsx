@@ -1,7 +1,7 @@
 import {FC} from 'react';
 import {User} from '../../../types';
 import {combineString} from '../../../utils';
-import {Avatar, Button, StaticField} from '../../ui-component';
+import {Avatar, Link, StaticField} from '../../ui-component';
 import classes from './userCard.module.scss';
 
 interface UserCardProps {
@@ -47,7 +47,7 @@ export const UserCard: FC<UserCardProps> = ({userData}) => {
                 );
             })}
             <div className={classes.linkBlock}>
-                <Button
+                <Link
                     label="Перейти в профиль"
                     href={userData.html_url as string}
                 />
