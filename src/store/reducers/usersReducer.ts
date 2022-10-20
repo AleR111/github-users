@@ -35,6 +35,7 @@ export const usersSlice = createSlice({
         [fetchUsers.rejected.type]: (state, action: PayloadAction<string>) => {
             state.isLoading = false;
             state.error = action.payload;
+            state.data = null;
         },
     },
 });

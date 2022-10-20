@@ -1,8 +1,9 @@
 import {FC, memo, useEffect, useState} from 'react';
 import {useAppActions, useAppSelector} from '../../../hooks';
 import {FieldType, Sorting, User} from '../../../types';
-import {Modal, Table} from '../../ui-component';
+import {Error, Modal, Table} from '../../ui-component';
 import {UserCard} from '../user-card';
+import {UsersSkeleton} from './users-skeleton';
 
 const columns = [
     {id: 'id', label: 'Идентификатор'},
@@ -42,8 +43,8 @@ export const UsersTable: FC<UsersTableProps> = memo(({search, page}) => {
         fetchUsers({page, search, sorting});
     }, [page, search, sorting]);
 
-    if (isLoading) return <div>loading</div>;
-    if (error) return <div>{error}</div>;
+    if (isLoading) return <UsersSkeleton />;
+    if (error) return <Error value={error} />;
 
     const isUsersData = !!data?.users.length;
 

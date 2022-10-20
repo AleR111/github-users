@@ -5,3 +5,5 @@ export * from './Link';
 export * from './modal';
 export * from './pagination';
 export * from './static-field';
+export * from './error';
+export * from './skeleton';

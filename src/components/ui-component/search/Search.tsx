@@ -1,14 +1,6 @@
 import {Input} from '@mui/material';
 
-import {
-    FC,
-    memo,
-    SetStateAction,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react';
+import {FC, memo, SetStateAction, useEffect, useMemo} from 'react';
 import {debounce} from 'lodash';
 
 import classes from './search.module.scss';
@@ -18,7 +10,7 @@ interface SearchProps {
     placeholder?: string;
 }
 
-export const Search: FC<SearchProps> = ({setValue, placeholder}) => {
+export const Search: FC<SearchProps> = memo(({setValue, placeholder}) => {
     const changeHandler = (event: any) => {
         setValue(event.target.value);
     };
@@ -40,4 +32,4 @@ export const Search: FC<SearchProps> = ({setValue, placeholder}) => {
             className={classes.inputPaper}
         />
     );
-};
+});

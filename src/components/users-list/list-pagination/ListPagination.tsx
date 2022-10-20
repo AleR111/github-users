@@ -1,15 +1,15 @@
-import {FC} from 'react';
+import {FC, memo} from 'react';
 import {useAppSelector} from '../../../hooks';
 import {per_page} from '../../../settings';
 import {Pagination} from '../../ui-component';
-import classes from './paginationBlock.module.scss';
+import classes from './listPagination.module.scss';
 
-interface PaginationBlockProps {
+interface ListPaginationProps {
     page: number;
     newPage: (page: number) => void;
 }
 
-export const PaginationBlock: FC<PaginationBlockProps> = ({page, newPage}) => {
+export const ListPagination: FC<ListPaginationProps> = ({page, newPage}) => {
     const {data} = useAppSelector((store) => store.users);
 
     const countPage = Math.min(

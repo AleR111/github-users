@@ -1,7 +1,7 @@
-import {FC, useState} from 'react';
+import {FC, SetStateAction, useCallback, useState} from 'react';
 
 import {Search} from '../ui-component';
-import {PaginationBlock} from './pagination-block';
+import {ListPagination} from './list-pagination';
 import {UsersTable} from './users-table';
 import classes from './usersList.module.scss';
 
@@ -13,11 +13,19 @@ export const UsersList: FC = () => {
         setPage(page);
     };
 
+    const setSearchHandler = useCallback(
+        (value: SetStateAction<string>) => {
+            setSearch(value);
+            setPage(1);
+        },
+        [setSearch, setPage]
+    );
+
     return (
         <div>
             <div className={classes.searchBlock}>
                 <Search
-                    setValue={setSearch}
+                    setValue={setSearchHandler}
                     placeholder="Filter by name"
                 />
             </div>
@@ -27,7 +35,7 @@ export const UsersList: FC = () => {
                 page={page}
             />
 
-            <PaginationBlock
+            <ListPagination
                 page={page}
                 newPage={newPage}
             />
