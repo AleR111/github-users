@@ -11,15 +11,15 @@ import {
 } from '@mui/material';
 import {format} from 'date-fns';
 
-import {Columns, FieldType, Sorting, TableDate} from '../../../types';
+import {Columns, FieldType, Sorting, TableData} from '../../../types';
 import {Link} from '../Link';
 
 interface TableProps {
     columns: Columns[];
-    data: TableDate[];
-    onClick?: (row: TableDate) => void;
+    data: TableData[];
+    onClick?: (row: TableData) => void;
     changeSort?: (sorting: Sorting) => void;
-    sorting: Sorting | null;
+    sorting?: Sorting | null;
 }
 
 export const Table: FC<TableProps> = ({
@@ -31,25 +31,24 @@ export const Table: FC<TableProps> = ({
 }) => {
     const changeSortHandler = (col: Columns) =>
         changeSort({
-            id: col.id,
+            ...col,
             order: sorting?.id === col.id ? sorting?.order : 'desc',
         });
+
     return (
         <TableContainer component={Paper}>
-            <TableUI sx={{minWidth: 650}}>
+            <TableUI>
                 <TableHead>
                     <TableRow>
                         {columns.map((col) => {
+                            const direction =
+                                sorting?.id === col.id ? sorting?.order : 'asc';
                             return (
                                 <TableCell key={col.id}>
                                     {col.isSort ? (
                                         <TableSortLabel
-                                            active={sorting?.id === col.id}
-                                            direction={
-                                                sorting?.id === col.id
-                                                    ? sorting?.order
-                                                    : 'asc'
-                                            }
+                                            active
+                                            direction={direction}
                                             onClick={() =>
                                                 changeSortHandler(col)
                                             }
@@ -69,11 +68,6 @@ export const Table: FC<TableProps> = ({
                         <TableRow
                             hover
                             key={row.id}
-                            sx={{
-                                '&:last-child td, &:last-child th': {
-                                    border: 0,
-                                },
-                            }}
                             onClick={() => onClick(row)}
                         >
                             {columns.map((col) => {
@@ -83,19 +77,10 @@ export const Table: FC<TableProps> = ({
                                         component="th"
                                         scope="row"
                                     >
-                                        {col.type === FieldType.LINK ? (
-                                            <Link
-                                                href={row[col.id]}
-                                                label={row[col.id]}
-                                            />
-                                        ) : col.type === FieldType.DATE ? (
-                                            format(
-                                                new Date(row[col.id] as string),
-                                                'dd-MM-yyyy'
-                                            )
-                                        ) : (
-                                            row[col.id] || '-'
-                                        )}
+                                        <TableCellValue
+                                            col={col}
+                                            row={row}
+                                        />
                                     </TableCell>
                                 );
                             })}
@@ -105,4 +90,25 @@ export const Table: FC<TableProps> = ({
             </TableUI>
         </TableContainer>
     );
+};
+
+interface TableCellValueProps {
+    col: Columns;
+    row: TableData;
+}
+
+const TableCellValue: FC<TableCellValueProps> = ({col, row}) => {
+    switch (col.type) {
+        case FieldType.LINK:
+            return (
+                <Link
+                    href={row[col.id]}
+                    label={row[col.id]}
+                />
+            );
+        case FieldType.DATE:
+            return format(new Date(row[col.id] as string), 'dd-MM-yyyy');
+        default:
+            return row[col.id] || '-';
+    }
 };

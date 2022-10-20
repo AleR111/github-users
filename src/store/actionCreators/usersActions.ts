@@ -1,7 +1,7 @@
-import {getUserData, getUsers} from '../../api';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {sliceName} from '../reducers/usersReducer';
-import {Sorting} from '../../types';
+
+import {getUserData, getUsers} from '../../api';
+import {SearchResult, Sorting, User} from '../../types';
 
 interface Params {
     page?: number;
@@ -10,15 +10,19 @@ interface Params {
 }
 
 export const fetchUsers = createAsyncThunk(
-    `${sliceName}/fetchUsers`,
+    `users/fetchUsers`,
     async (params: Params = {}, {rejectWithValue}) => {
         const {page, search, sorting} = params;
         try {
-            const response = await getUsers<any>(search, page, sorting);
+            const response = await getUsers<SearchResult>(
+                search,
+                page,
+                sorting
+            );
 
-            const usersLogins = response.data.items as any[];
+            const usersLogins = response.data.items;
             const usersPromises = usersLogins.map(async (user) => {
-                return await getUserData(user.login);
+                return await getUserData<User>(user.login);
             });
 
             const users = await Promise.all(usersPromises);

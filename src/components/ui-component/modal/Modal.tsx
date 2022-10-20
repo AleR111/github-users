@@ -1,5 +1,6 @@
 import {FC} from 'react';
 import {Box, Modal as ModalUI} from '@mui/material';
+
 import classes from './modal.module.scss';
 
 interface ModalProps {

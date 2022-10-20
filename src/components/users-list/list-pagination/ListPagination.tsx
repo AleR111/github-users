@@ -1,4 +1,5 @@
-import {FC, memo} from 'react';
+import {FC} from 'react';
+
 import {useAppSelector} from '../../../hooks';
 import {per_page} from '../../../settings';
 import {Pagination} from '../../ui-component';

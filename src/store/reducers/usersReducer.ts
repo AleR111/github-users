@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {UserListData} from '../../types';
+
 import {fetchUsers} from '../actionCreators/usersActions';
+import {UserListData} from '../../types';
 
 interface InitialState {
     data: UserListData | null;

@@ -12,4 +12,4 @@ export interface Columns {
     stringStructure?: string;
 }
 
-export type TableDate = Record<string, any>;
+export type TableData = Record<string, any>;

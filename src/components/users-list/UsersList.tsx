@@ -9,10 +9,6 @@ export const UsersList: FC = () => {
     const [search, setSearch] = useState('');
     const [page, setPage] = useState(1);
 
-    const newPage = (page: number) => {
-        setPage(page);
-    };
-
     const setSearchHandler = useCallback(
         (value: SetStateAction<string>) => {
             setSearch(value);
@@ -37,7 +33,7 @@ export const UsersList: FC = () => {
 
             <ListPagination
                 page={page}
-                newPage={newPage}
+                newPage={setPage}
             />
         </div>
     );

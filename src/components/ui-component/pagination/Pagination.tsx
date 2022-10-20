@@ -1,5 +1,6 @@
-import {Pagination as PaginationUI} from '@mui/material';
 import {FC} from 'react';
+import {Pagination as PaginationUI} from '@mui/material';
+
 import classes from './pagination.module.scss';
 
 interface PaginationProps {

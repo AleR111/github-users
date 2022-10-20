@@ -1,5 +1,5 @@
-import {Avatar as AvatarUI} from '@mui/material';
 import {FC} from 'react';
+import {Avatar as AvatarUI} from '@mui/material';
 
 import classes from './avatar.module.scss';
 

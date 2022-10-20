@@ -1,4 +1,5 @@
 import {FC, memo, useEffect, useState} from 'react';
+
 import {useAppActions, useAppSelector} from '../../../hooks';
 import {Columns, FieldType, Sorting, User} from '../../../types';
 import {Error, Modal, Table} from '../../ui-component';
@@ -29,13 +30,12 @@ export const UsersTable: FC<UsersTableProps> = memo(({search, page}) => {
 
     const [openModal, setOpenModal] = useState(false);
     const [userData, setUserData] = useState<User | null>(null);
+    const [sorting, setSorting] = useState<Sorting | null>(null);
 
     const selectRow = (rowData: any) => {
         setOpenModal(true);
         setUserData(rowData);
     };
-
-    const [sorting, setSorting] = useState<Sorting | null>(null);
 
     const changeSortHandler = (sorting: Sorting) => {
         setSorting({
@@ -50,7 +50,7 @@ export const UsersTable: FC<UsersTableProps> = memo(({search, page}) => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    });
+    }, [data]);
 
     if (isLoading) return <UsersSkeleton />;
     if (error) return <Error value={error} />;

@@ -1,5 +1,5 @@
-import {Box, Link as LinkUI} from '@mui/material';
 import {FC} from 'react';
+import {Box, Link as LinkUI} from '@mui/material';
 
 interface LinkProps {
     label?: string;

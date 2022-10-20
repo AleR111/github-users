@@ -6,10 +6,6 @@ import {combineString} from '../../../utils';
 import {Avatar, Link, StaticField} from '../../ui-component';
 import classes from './userCard.module.scss';
 
-interface UserCardProps {
-    userData: User;
-}
-
 const rowMeta: Columns[] = [
     {id: 'id', label: 'id'},
     {
@@ -28,16 +24,17 @@ const rowMeta: Columns[] = [
     {id: 'created_at', label: 'Зарегистрирован', type: FieldType.DATE},
 ];
 
+interface UserCardProps {
+    userData: User;
+}
+
 export const UserCard: FC<UserCardProps> = ({userData}) => {
     const getValue = (row: Columns) => {
         switch (row.type) {
             case FieldType.COMBINED_STRING:
                 return combineString<User>(row.stringStructure, userData);
             case FieldType.DATE:
-                return format(
-                    new Date(userData[row.id] as string),
-                    'dd-MM-yyyy'
-                );
+                return format(new Date(userData[row.id]), 'dd-MM-yyyy');
             default:
                 return userData[row.id];
         }
@@ -45,8 +42,8 @@ export const UserCard: FC<UserCardProps> = ({userData}) => {
     return (
         <div className={classes.userCard}>
             <Avatar
-                alt={userData.name as string}
-                src={userData.avatar_url as string}
+                alt={userData.name}
+                src={userData.avatar_url}
             />
             {rowMeta.map((row) => {
                 const value = getValue(row);
@@ -61,7 +58,7 @@ export const UserCard: FC<UserCardProps> = ({userData}) => {
             <div className={classes.linkBlock}>
                 <Link
                     label="Перейти в профиль"
-                    href={userData.html_url as string}
+                    href={userData.html_url}
                 />
             </div>
         </div>

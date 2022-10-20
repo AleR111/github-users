@@ -33,7 +33,6 @@
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
-    "@material-ui/icons": "^4.11.3",
     "@mui/material": "^5.10.10",
     "@reduxjs/toolkit": "^1.8.6",
     "axios": "^1.1.3",
